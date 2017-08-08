@@ -26,6 +26,7 @@ from pulp_smash.constants import (
 from pulp_migrate.constants import (
     RPM_REPO,
     PYTHON_REPO,
+    PYTHON_PYPI_PACKAGES,
     DOCKER_V1_REPO,
     DOCKER_V2_REPO,
 )
@@ -94,6 +95,7 @@ class PopulatePythonRepo(BasePopulateTestCase):
         body['distributors'] = [distributor]
         body['importer_config'] = {
             'feed': PYTHON_PYPI_FEED_URL,
+            'package_names': PYTHON_PYPI_PACKAGES,
         }
         body['display_name'] = PYTHON_REPO
         body['id'] = body['display_name']

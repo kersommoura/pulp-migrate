@@ -55,22 +55,23 @@ def gen_python_distributor():
 def clean_repo(repo_id):
     """Delete the repo with given id and any content left orphaned by it.
 
-    Calls to clean_repo will only attempt to delete the repo and call to delete
-    orphans if a repository with given id exists.
+    Calls to clean_repo will only attempt to delete the repo
+    if a repository with given id exists.
+
+    This also makes a call to delete all orphaned content units.
     """
     client = api.Client(config.get_config(), api.json_handler)
     repos = client.get(REPOSITORY_PATH)
     for repo in repos:
         if urljoin(REPOSITORY_PATH, repo_id) in repo['_href']:
             client.delete(repo['_href'])
-            client.delete(ORPHANS_PATH)
+    client.delete(ORPHANS_PATH)
 
 
 def download_rpm(repo_name, rpm_name):
     """Download an rpm from a published repo."""
-    download_path = '/pulp/repos/{}/Packages/{}/{}'.format(
+    download_path = '/pulp/repos/{}/{}'.format(
         repo_name,
-        rpm_name[0],
         rpm_name
     )
     return api.Client(config.get_config()).get(download_path)
